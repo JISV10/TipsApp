@@ -3,19 +3,15 @@ package com.example.tipsapp
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring.DampingRatioHighBouncy
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
-import androidx.compose.animation.core.Spring.StiffnessHigh
 import androidx.compose.animation.core.Spring.StiffnessVeryLow
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,7 +58,7 @@ fun TipsList(
     AnimatedVisibility(
         visibleState = visibleState,
         enter = fadeIn(
-            animationSpec = spring(dampingRatio = DampingRatioHighBouncy)
+            animationSpec = spring(dampingRatio = DampingRatioLowBouncy)
         ),
         exit = fadeOut(),
         modifier = modifier
@@ -72,13 +69,13 @@ fun TipsList(
                 TipCard(
                     agrocard = agrocard,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = 4.dp)
                         // Animate each list item to slide in vertically
                         .animateEnterExit(
                             enter = slideInVertically(
                                 animationSpec = spring(
                                     stiffness = StiffnessVeryLow,
-                                    dampingRatio = DampingRatioHighBouncy
+                                    dampingRatio = DampingRatioLowBouncy
                                 ),
                                 initialOffsetY = { it * (index + 1) }
                             )
@@ -100,14 +97,14 @@ fun TipCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation =  10.dp)
+            .padding(4.dp),
+
     ) {
         Column(
             modifier = Modifier
 
                 .clickable(onClick = { expanded = !expanded })
-                .padding(8.dp)
+                .padding(4.dp)
         ) {
             Text(
                 text = "Tip " + stringResource(agrocard.tipNumber),
@@ -130,7 +127,8 @@ fun TipCard(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(200.dp)
+                    .clip(MaterialTheme.shapes.large),
                 contentScale = ContentScale.Crop
             )
 

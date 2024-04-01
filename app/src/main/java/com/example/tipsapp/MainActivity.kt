@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
             TipsListApp()
         }
      }
-    }
+   }
 }
 
 
@@ -96,7 +96,7 @@ fun TopAppBar(modifier: Modifier = Modifier) {
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.titleLarge,
-                                    )
+                    )
             }
         },
         modifier = modifier
