@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tipsapp.model.Agrocards
@@ -95,7 +96,7 @@ fun TipCard(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text(text = "Tip" + stringResource(agrocard.tipNumber),
+            Text(text = "Tip " + stringResource(agrocard.tipNumber),
                  style = MaterialTheme.typography.titleSmall)
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -118,7 +119,8 @@ fun TipCard(
 
             Text(
                 text = stringResource(agrocard.description),
-                style = MaterialTheme.typography.displaySmall
+                style = MaterialTheme.typography.displaySmall,
+                textAlign = TextAlign.Center
             )
         }
     }
