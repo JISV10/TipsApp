@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 
 data class Agrocards(
 
-    val tipNumber: Int,
+    @StringRes val tipNumber: Int,
     @StringRes val title: Int,
     @StringRes val description: Int,
     @DrawableRes val image: Int
