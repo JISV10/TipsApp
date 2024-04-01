@@ -3,15 +3,20 @@ package com.example.tipsapp
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring.DampingRatioHighBouncy
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
+import androidx.compose.animation.core.Spring.StiffnessHigh
 import androidx.compose.animation.core.Spring.StiffnessVeryLow
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +30,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -70,7 +78,7 @@ fun TipsList(
                             enter = slideInVertically(
                                 animationSpec = spring(
                                     stiffness = StiffnessVeryLow,
-                                    dampingRatio = DampingRatioLowBouncy
+                                    dampingRatio = DampingRatioHighBouncy
                                 ),
                                 initialOffsetY = { it * (index + 1) }
                             )
@@ -84,30 +92,41 @@ fun TipsList(
 @Composable
 fun TipCard(
     agrocard: Agrocards,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation =  10.dp)
-
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+
+                .clickable(onClick = { expanded = !expanded })
+                .padding(8.dp)
         ) {
-            Text(text = "Tip " + stringResource(agrocard.tipNumber),
-                 style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = "Tip " + stringResource(agrocard.tipNumber),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(start = 8.dp)
+            )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-            Text(text = stringResource(agrocard.title),
-                 style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(id = agrocard.title),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(start = 8.dp)
+            )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Image(
-                painter = painterResource(agrocard.image),
+                painter = painterResource(id = agrocard.image),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,11 +136,18 @@ fun TipCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = stringResource(agrocard.description),
-                style = MaterialTheme.typography.displaySmall,
-                textAlign = TextAlign.Center
-            )
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Text(
+                    text = stringResource(id = agrocard.description),
+                    style = MaterialTheme.typography.displaySmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
         }
     }
 }
